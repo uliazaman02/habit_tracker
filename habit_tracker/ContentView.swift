@@ -8,6 +8,25 @@
 import SwiftUI
 
 
+extension Color {
+    static let lightestPink = Color(red: 234/255, green: 173/255, blue: 221/255)
+    static let brightestPink = Color(red: 213/255, green: 82/255, blue: 137/255)
+}
+
+struct CustomButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .background(Color.pink)
+//            .background(configuration.isPressed ? Color.white : Color.pink)
+//            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+//            .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+    }
+}
+
+
 struct ContentView: View {
     @State private var newHabitInput: String = ""
     @State private var allHabits: [String] = []
@@ -63,21 +82,17 @@ struct ContentView: View {
             TextField("New Habit", text: $newHabitInput)
                 .padding()
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .background(Color.pink.opacity(0.3))
+                .background(Color.lightestPink)
             
             Button("Add New Habit") {
                 mainButton = true
                 allHabits.append(newHabitInput)
                 newHabitInput = ""
             }
-                .buttonStyle(.borderedProminent)
+            .buttonStyle(CustomButtonStyle())
             
             Spacer()
         }
-        
-//        Image(systemName: "globe")
-//            .imageScale(.large)
-//            .foregroundStyle(.tint)
     }
 }
 
