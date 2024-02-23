@@ -75,8 +75,8 @@ struct ContentView: View {
                         }
                     }
                 }
-                    .padding()
-                    .background(Color.pink.opacity(0.3))
+                .padding()
+                .background(Color.pink.opacity(0.3))
             }
             
             TextField("New Habit", text: $newHabitInput)
