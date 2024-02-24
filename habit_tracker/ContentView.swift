@@ -9,15 +9,19 @@ import SwiftUI
 
 
 extension Color {
-    static let lightestPink = Color(red: 234/255, green: 173/255, blue: 221/255)
-    static let brightestPink = Color(red: 213/255, green: 82/255, blue: 137/255)
+    static let lightestPink = Color(red: 254/255, green: 218/255, blue: 225/255)
+    static let backgroundYellow = Color(red: 255/255, green: 255/255, blue: 232/255)
+    static let midnightBlue = Color(red: 22/255, green: 61/255, blue: 106/255)
+    static let lightBlue = Color(red: 173/255, green: 231/255, blue: 255/255)
+    static let buttonBlue = Color(red: 98/255, green: 179/255, blue: 241/255)
+    
 }
 
 struct CustomButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .background(Color.pink)
+            .background(Color.buttonBlue)
 //            .background(configuration.isPressed ? Color.white : Color.pink)
 //            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
             .foregroundColor(.white)
@@ -38,7 +42,7 @@ struct ContentView: View {
             Text("Habit Tracker")
                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 .font(.title)
-                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                .foregroundColor(.midnightBlue)
                 .padding()
             
             Spacer()
@@ -53,10 +57,13 @@ struct ContentView: View {
                         text in HStack {
                             Text(text)
                                 .padding()
+                                .frame(width: 300)
+                                .background(Color.white)
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 5.0)
+                                    RoundedRectangle(cornerRadius: 5)
                                         .stroke(Color.pink, lineWidth: 2)
                                 )
+                                .padding(10)
                             
                             Button(action: {
                                 childButton.toggle()
@@ -76,13 +83,23 @@ struct ContentView: View {
                     }
                 }
                 .padding()
-                .background(Color.pink.opacity(0.3))
+                .background(Color.lightestPink)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.lightestPink, lineWidth: 2)
+                )
+                .padding()
             }
             
             TextField("New Habit", text: $newHabitInput)
                 .padding()
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .background(Color.lightestPink)
+                .background(RoundedRectangle(cornerRadius: 10).fill(Color.lightBlue))
+                .padding()
+                .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.midnightBlue, lineWidth: 1)
+                            .padding()
+                )
             
             Button("Add New Habit") {
                 mainButton = true
@@ -92,7 +109,7 @@ struct ContentView: View {
             .buttonStyle(CustomButtonStyle())
             
             Spacer()
-        }
+        }.background(Color.backgroundYellow)
     }
 }
 

@@ -7,43 +7,90 @@
 
 import SwiftUI
 
+
+//extension Color {
+//    static let lightestPink = Color(red: 254/255, green: 218/255, blue: 225/255)
+//    static let backgroundYellow = Color(red: 255/255, green: 255/255, blue: 232/255)
+//    static let midnightBlue = Color(red: 22/255, green: 61/255, blue: 106/255)
+//    static let lightBlue = Color(red: 173/255, green: 231/255, blue: 255/255)
+//    static let buttonBlue = Color(red: 98/255, green: 179/255, blue: 241/255)
+//    
+//}
+
 struct CalendarView: View {
-    @State private var selectedMonth: Int = 1
+    @State private var selectedMonth: Int = 0
+    @State private var selectedDate = Date()
     let days = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"]
     
     var body: some View {
-        HStack {
-            Button {
-                //action
-            } label: {
-                Image(systemName: "lessthan")
-                    .foregroundColor(.pink)
+        VStack {
+            Text("Habit Tracker")
+                .fontWeight(.bold)
+                .font(.title)
+                .foregroundColor(.midnightBlue)
+                .padding()
+            
+            Spacer()
+            
+            HStack {
+                Button {
+                    withAnimation {
+                        selectedMonth -= 1
+                    }
+                } label: {
+                    Image(systemName: "lessthan")
+                        .foregroundColor(.pink)
+                }
+                
+                Text(selectedDate.fetchMonthYear())
+                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                
+                
+                Button {
+                    withAnimation {
+                        selectedMonth += 1
+                    }
+                } label: {
+                    Image(systemName: "greaterthan")
+                        .foregroundColor(.pink)
+                }
             }
             
-            Text("Month Year")
-//            let month = fetchSelectedMonth()
-//            let dateFormatter = DateFormatter()
-//            dateFormatter.dateFormat = "MMMM yyyy"
-//            let formattedHeader = dateFormatter.string(from: month)
-//            Text("\(formattedHeader)")
+            HStack {
+                ForEach(days, id:\.self) { day in Text(day)}
+            }
             
-            Button {
-                //action
-            } label: {
-                Image(systemName: "greaterthan")
-                    .foregroundColor(.pink)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 20) {
+                ForEach(fetchDates()) { value in
+                    ZStack {
+                        if value.day != -1 {
+                            Text("\(value.day)")
+                                .background {
+                                    ZStack(alignment: .bottom) {
+                                        Circle()
+                                            .foregroundColor(.clear)
+                                            .frame(width: 70, height: 70)
+                                        
+                                        if value.date.toString() == Date().toString() { // need to change this if value statement
+                                            Circle()
+                                                .foregroundColor(.blue.opacity(0.3))
+                                                .frame(width: 10, height: 10)
+                                        }
+                                    }
+                                }
+                        } else {
+                            Text("")
+                        }
+                    }
+                    .frame(width: 32, height: 32)
+                }
+                .padding()
             }
-        }
-        
-        HStack {
-            ForEach(days, id:\.self) { day in Text(day)}
-        }
-        
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7)) {
-            ForEach(fetchDates()) { value in 
-                Text("\(value.day)")
+            .onChange(of: selectedMonth) { _ in
+                selectedDate = fetchSelectedMonth()
             }
-        }
+            Spacer()
+        }.background(Color.backgroundYellow)
     }
     
     func fetchDates() -> [CalendarDate] {
@@ -51,6 +98,12 @@ struct CalendarView: View {
         let currMonth = fetchSelectedMonth()
         
         var allDates = currMonth.fetchAllDates().map({ CalendarDate(day: calendar.component(.day, from: $0), date: $0) })
+        
+        let firstDay = calendar.component(.weekday, from: allDates.first?.date ?? Date())
+        
+        for _ in 0..<firstDay - 1 {
+            allDates.insert(CalendarDate(day: -1, date: Date()), at: 0)
+        }
         
         return allDates
     }
@@ -69,6 +122,13 @@ struct CalendarDate: Identifiable {
 }
 
 extension Date {
+    
+    func fetchMonthYear() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM yyyy"
+        return dateFormatter.string(from: self)
+    }
+    
     func fetchAllDates() -> [Date] {
         let calendar = Calendar.current
         let currMonth = calendar.component(.month, from: self)
@@ -93,6 +153,12 @@ extension Date {
             currDate = calendar.date(byAdding: .day, value: 1, to: currDate)!
         }
         return dates
+    }
+    
+    func toString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        return formatter.string(from: self)
     }
 }
 
