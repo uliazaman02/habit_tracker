@@ -20,77 +20,86 @@ import SwiftUI
 struct CalendarView: View {
     @State private var selectedMonth: Int = 0
     @State private var selectedDate = Date()
+//    @EnvironmentObject var habitsManager: HabitsManager
     let days = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"]
     
     var body: some View {
-        VStack {
-            Text("Habit Tracker")
-                .fontWeight(.bold)
-                .font(.title)
-                .foregroundColor(.midnightBlue)
-                .padding()
-            
-            Spacer()
-            
-            HStack {
-                Button {
-                    withAnimation {
-                        selectedMonth -= 1
-                    }
-                } label: {
-                    Image(systemName: "lessthan")
-                        .foregroundColor(.pink)
-                }
+        NavigationStack {
+            VStack {
+                Text("Habit Tracker")
+                    .fontWeight(.bold)
+                    .font(.title)
+                    .foregroundColor(.midnightBlue)
+                    .padding()
                 
-                Text(selectedDate.fetchMonthYear())
-                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                Spacer()
                 
-                
-                Button {
-                    withAnimation {
-                        selectedMonth += 1
-                    }
-                } label: {
-                    Image(systemName: "greaterthan")
-                        .foregroundColor(.pink)
-                }
-            }
-            
-            HStack {
-                ForEach(days, id:\.self) { day in Text(day)}
-            }
-            
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 20) {
-                ForEach(fetchDates()) { value in
-                    ZStack {
-                        if value.day != -1 {
-                            Text("\(value.day)")
-                                .background {
-                                    ZStack(alignment: .bottom) {
-                                        Circle()
-                                            .foregroundColor(.clear)
-                                            .frame(width: 70, height: 70)
-                                        
-                                        if value.date.toString() == Date().toString() { // need to change this if value statement
-                                            Circle()
-                                                .foregroundColor(.blue.opacity(0.3))
-                                                .frame(width: 10, height: 10)
-                                        }
-                                    }
-                                }
-                        } else {
-                            Text("")
+                HStack {
+                    Button {
+                        withAnimation {
+                            selectedMonth -= 1
                         }
+                    } label: {
+                        Image(systemName: "lessthan")
+                            .foregroundColor(.pink)
                     }
-                    .frame(width: 32, height: 32)
+                    
+                    Text(selectedDate.fetchMonthYear())
+                        .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    
+                    
+                    Button {
+                        withAnimation {
+                            selectedMonth += 1
+                        }
+                    } label: {
+                        Image(systemName: "greaterthan")
+                            .foregroundColor(.pink)
+                    }
                 }
-                .padding()
-            }
-            .onChange(of: selectedMonth) { _ in
-                selectedDate = fetchSelectedMonth()
-            }
-            Spacer()
-        }.background(Color.backgroundYellow)
+                
+                HStack {
+                    ForEach(days, id:\.self) { day in Text(day)}
+                }
+                
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 20) {
+                    ForEach(fetchDates()) { value in
+                        ZStack {
+                            if value.day != -1 {
+                                NavigationLink {
+                                    DayView()
+                                } label: {
+                                    Text("\(value.day)")
+                                        .foregroundColor(.black)
+                                        .fontWeight(.medium)
+                                        .background {
+                                            ZStack(alignment: .bottom) {
+                                                Circle()
+                                                    .foregroundColor(.clear)
+                                                    .frame(width: 70, height: 70)
+                                                
+                                                if value.date.toString() == Date().toString() { // need to change this if value statement
+                                                    Circle()
+                                                        .foregroundColor(.blue.opacity(0.3))
+                                                        .frame(width: 10, height: 10)
+                                                }
+                                            }
+                                        }
+                                }
+                            } else {
+                                Text("")
+                            }
+                        }
+                        .frame(width: 32, height: 32)
+                    }
+                    .padding()
+                }
+                .onChange(of: selectedMonth) { _ in
+                    selectedDate = fetchSelectedMonth()
+                }
+                Spacer()
+            }.background(Color.backgroundYellow)
+        }
     }
     
     func fetchDates() -> [CalendarDate] {

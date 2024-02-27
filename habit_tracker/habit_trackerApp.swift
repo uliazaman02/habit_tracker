@@ -13,6 +13,7 @@ struct habit_trackerApp: App {
         WindowGroup {
             TabView {
                 ContentView()
+//                    .environmentObject(habitsManager)
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }

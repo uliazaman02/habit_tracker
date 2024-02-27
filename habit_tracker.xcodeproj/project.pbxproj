@@ -15,6 +15,7 @@
 		558300C52B87012A002EC686 /* habit_trackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558300C42B87012A002EC686 /* habit_trackerUITests.swift */; };
 		558300C72B87012A002EC686 /* habit_trackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558300C62B87012A002EC686 /* habit_trackerUITestsLaunchTests.swift */; };
 		5595A7AC2B87FF6200FF4998 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5595A7AB2B87FF6200FF4998 /* CalendarView.swift */; };
+		55FCF2FC2B8D8B64005794CC /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FCF2FB2B8D8B64005794CC /* DayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		558300C42B87012A002EC686 /* habit_trackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = habit_trackerUITests.swift; sourceTree = "<group>"; };
 		558300C62B87012A002EC686 /* habit_trackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = habit_trackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		5595A7AB2B87FF6200FF4998 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		55FCF2FB2B8D8B64005794CC /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				558300A92B870126002EC686 /* habit_trackerApp.swift */,
 				558300AB2B870126002EC686 /* ContentView.swift */,
 				5595A7AB2B87FF6200FF4998 /* CalendarView.swift */,
+				55FCF2FB2B8D8B64005794CC /* DayView.swift */,
 				558300AD2B870129002EC686 /* Assets.xcassets */,
 				558300AF2B870129002EC686 /* Preview Content */,
 			);
@@ -261,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				558300AC2B870126002EC686 /* ContentView.swift in Sources */,
+				55FCF2FC2B8D8B64005794CC /* DayView.swift in Sources */,
 				558300AA2B870126002EC686 /* habit_trackerApp.swift in Sources */,
 				5595A7AC2B87FF6200FF4998 /* CalendarView.swift in Sources */,
 			);

@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+class HabitsManager: ObservableObject {
+    @Published var allHabits: [Habit] = []
+}
 
 extension Color {
     static let lightestPink = Color(red: 254/255, green: 218/255, blue: 225/255)
@@ -38,8 +41,9 @@ struct Habit: Identifiable {
 
 struct ContentView: View {
     @State private var newHabitInput: String = ""
-    @State private var allHabits: [Habit] = []
+//    @State private var allHabits: [Habit] = []
     @State private var mainButton: Bool = false
+    @StateObject private var habitsManager = HabitsManager()
     
     var body: some View {
         VStack {
@@ -51,13 +55,13 @@ struct ContentView: View {
             
             Spacer()
             
-            if mainButton && !allHabits.isEmpty {
+            if mainButton && !habitsManager.allHabits.isEmpty {
                 VStack {
                     HStack {
                         Spacer()
                     }
                     
-                    ForEach(allHabits) { habit in
+                    ForEach(habitsManager.allHabits) { habit in
                         ZStack {
                             RoundedRectangle(cornerRadius: 20)
                                 .stroke(Color.pink, lineWidth: 2)
@@ -96,7 +100,7 @@ struct ContentView: View {
             
             Button("Add New Habit") {
                 mainButton = true
-                allHabits.append(Habit(name: newHabitInput))
+                habitsManager.allHabits.append(Habit(name: newHabitInput))
                 newHabitInput = ""
             }
             .buttonStyle(CustomButtonStyle())
@@ -106,10 +110,16 @@ struct ContentView: View {
     }
     
     private func toggleCompletion(for habit: Habit) {
-        if let index = allHabits.firstIndex(where: { $0.id == habit.id }) {
-            allHabits[index].isCompleted.toggle()
+        if let index = habitsManager.allHabits.firstIndex(where: { $0.id == habit.id }) {
+            habitsManager.allHabits[index].isCompleted.toggle()
         }
     }
+    
+//    struct ContentView_Previews: PreviewProvider {
+//        static var previews: some View {
+//            ContentView()
+//        }
+//    }
 }
 
 #Preview {
