@@ -30,12 +30,16 @@ struct CustomButtonStyle: ButtonStyle {
     }
 }
 
+struct Habit: Identifiable {
+    var id = UUID()
+    var name: String
+    var isCompleted = false
+}
 
 struct ContentView: View {
     @State private var newHabitInput: String = ""
-    @State private var allHabits: [String] = []
+    @State private var allHabits: [Habit] = []
     @State private var mainButton: Bool = false
-    @State private var childButton: Bool = false
     
     var body: some View {
         VStack {
@@ -53,41 +57,30 @@ struct ContentView: View {
                         Spacer()
                     }
                     
-                    ForEach(allHabits, id: \.self) {
-                        text in HStack {
-                            Text(text)
-                                .padding()
-                                .frame(width: 300)
-                                .background(Color.white)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .stroke(Color.pink, lineWidth: 2)
-                                )
+                    ForEach(allHabits) { habit in
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.pink, lineWidth: 2)
                                 .padding(10)
                             
-                            Button(action: {
-                                childButton.toggle()
-                            }) {
-                                if childButton {
-                                    Image(systemName: "circle.fill")
-                                        .foregroundColor(.pink)
+                            HStack {
+                                Text(habit.name)
+                                    .padding(.leading, 30)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    toggleCompletion(for: habit)
+                                }) {
+                                    Image(systemName: habit.isCompleted ? "circle.fill" : "circle")
+                                        .foregroundColor(habit.isCompleted ? .pink : .black)
                                 }
-                                else {
-                                    Image(systemName: "circle.fill")
-                                        .foregroundColor(.white)
-                                        .background(.pink)
-                                        .clipShape(Circle())
-                                }
+                                .padding(.trailing, 30)
                             }
                         }
+                        .frame(width: .infinity, height: 100)
                     }
                 }
-                .padding()
-                .background(Color.lightestPink)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.lightestPink, lineWidth: 2)
-                )
                 .padding()
             }
             
@@ -103,13 +96,19 @@ struct ContentView: View {
             
             Button("Add New Habit") {
                 mainButton = true
-                allHabits.append(newHabitInput)
+                allHabits.append(Habit(name: newHabitInput))
                 newHabitInput = ""
             }
             .buttonStyle(CustomButtonStyle())
             
             Spacer()
         }.background(Color.backgroundYellow)
+    }
+    
+    private func toggleCompletion(for habit: Habit) {
+        if let index = allHabits.firstIndex(where: { $0.id == habit.id }) {
+            allHabits[index].isCompleted.toggle()
+        }
     }
 }
 

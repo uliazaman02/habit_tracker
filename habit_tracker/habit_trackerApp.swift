@@ -11,7 +11,16 @@ import SwiftUI
 struct habit_trackerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                ContentView()
+                    .tabItem {
+                        Label("Home", systemImage: "house")
+                    }
+                CalendarView()
+                    .tabItem {
+                        Label("Home", systemImage: "calendar")
+                    }
+            }
         }
     }
 }
